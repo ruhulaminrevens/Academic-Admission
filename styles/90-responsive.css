@@ -1,0 +1,22 @@
+/* ---- fine-tuning: tiny phones, large screens, print, reduced motion ---- */
+@media (max-width: 380px) {
+  :root { --gutter: 14px; }
+  .btn { padding-inline: .9rem; } .hero-title { font-size: 2rem; } .post-head { flex-wrap: wrap; } .post-badges { width: 100%; justify-content: flex-start; }
+  .tabbar a { font-size: .62rem; } .toasts { right: 8px; left: 8px; width: auto; } .actions .act span { display: none; } .act { padding-inline: .55rem; }
+}
+@media (max-width: 640px) { .section-head { align-items: flex-start; } .digest { flex-direction: column; } .cta-band { text-align: center; justify-content: center; } .composer--cta { text-align: center; justify-content: center; } .profile-card { text-align: left; } }
+@media (min-width: 1800px) { .container { max-width: 84rem; } .grid-3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); } }
+@media (min-width: 2400px) { .container { max-width: 96rem; } }
+@media (hover: none) { [data-tilt] { transform: none !important; } .btn:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .ticker-track { animation: none; overflow-x: auto; } [data-tilt] { transform: none !important; }
+}
+@media (prefers-contrast: more) { :root { --line: rgba(255,255,255,.3); --muted: #c4cee3; } :root[data-theme="light"] { --line: rgba(15,23,42,.4); --muted: #2b3752; } }
+@media print {
+  .bg, .progress, .topbar, .tabbar, .footer, .announce, .toasts, .hero-stage, .ticker, .share-row, .btn, .scroll-cue { display: none !important; }
+  body { background: #fff; color: #000; padding: 0; } .card { background: #fff; border-color: #bbb; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; break-inside: avoid; } .muted { color: #444; } a { color: #000; }
+  [data-reveal] { opacity: 1 !important; translate: none !important; }
+}
+::view-transition-old(root) { animation: .22s var(--ease) both vt-out; } ::view-transition-new(root) { animation: .38s var(--ease) both vt-in; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-8px); } } @keyframes vt-in { from { opacity: 0; transform: translateY(14px); } }

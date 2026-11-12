@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "note": "Official pages checked every hour by scripts/editorial-ai.mjs. Only HTTPS pages from the institution itself. Add/remove entries freely; keywords narrow which links count as notices.",
+  "maxNewPerRun": 8,
+  "sources": [
+    { "id": "dshe", "name": "মাধ্যমিক ও উচ্চ শিক্ষা অধিদপ্তর (DSHE)", "url": "https://dshe.gov.bd/", "category": "Official" },
+    { "id": "moedu", "name": "শিক্ষা মন্ত্রণালয়", "url": "https://moedu.gov.bd/", "category": "Official" },
+    { "id": "ugc", "name": "বিশ্ববিদ্যালয় মঞ্জুরি কমিশন (UGC)", "url": "https://www.ugc.gov.bd/", "category": "Official" },
+    { "id": "dhaka-board", "name": "ঢাকা শিক্ষা বোর্ড", "url": "https://dhakaeducationboard.gov.bd/", "category": "Exam" },
+    { "id": "teletalk-admission", "name": "Admission Teletalk", "url": "https://admission.eis.du.ac.bd/", "category": "Admission" },
+    { "id": "buet", "name": "BUET Admission", "url": "https://admission.buet.ac.bd/", "category": "Admission" },
+    { "id": "kuet", "name": "KUET Undergraduate Admission", "url": "https://admission.kuet.ac.bd/", "category": "Admission" },
+    { "id": "ruet", "name": "RUET Admission", "url": "https://admission.ruet.ac.bd/", "category": "Admission" },
+    { "id": "cuet", "name": "CUET Admission", "url": "https://admission.cuet.ac.bd/", "category": "Admission" },
+    { "id": "gstadmission", "name": "গুচ্ছ ভর্তি (GST)", "url": "https://gstadmission.ac.bd/", "category": "Admission" }
+  ],
+  "keywords": ["ভর্তি", "বিজ্ঞপ্তি", "নোটিশ", "ফলাফল", "পরীক্ষা", "সময়সূচি", "admission", "notice", "circular", "result", "exam", "schedule", "deadline", "apply", "application"]
+}

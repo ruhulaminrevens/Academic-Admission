@@ -1,0 +1,38 @@
+/* Design tokens: dark is the default, light is opt-in via data-theme */
+:root {
+  --bg: #060912; --bg-2: #0a0f1f; --ink: #e9eefb; --muted: #98a4bd; --faint: #6b7792;
+  --glass: rgba(255,255,255,.055); --glass-2: rgba(255,255,255,.09); --glass-strong: rgba(14,20,40,.78);
+  --line: rgba(255,255,255,.10); --line-2: rgba(255,255,255,.18);
+  --emerald: #10e6a1; --cyan: #22d3ee; --violet: #8b5cf6; --pink: #f472b6; --amber: #fbbf24; --red: #fb7185; --blue: #60a5fa;
+  --brand: var(--emerald); --brand-ink: #04130d;
+  --grad: linear-gradient(120deg, #10e6a1 0%, #22d3ee 45%, #8b5cf6 100%);
+  --grad-warm: linear-gradient(120deg, #f472b6 0%, #fbbf24 100%);
+  --grad-text: linear-gradient(100deg, #5ff5c4 0%, #38d9f5 40%, #a78bfa 75%, #f0abfc 100%);
+  --shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 18px 50px -18px rgba(0,0,0,.65);
+  --shadow-lg: 0 30px 80px -24px rgba(0,0,0,.75);
+  --glow: 0 0 0 1px rgba(16,230,161,.35), 0 10px 40px -8px rgba(16,230,161,.45);
+  --ok: #34d399; --warn: #fbbf24; --hot: #fb7185; --info: #60a5fa;
+  --r-sm: 10px; --r: 16px; --r-lg: 24px; --r-pill: 999px;
+  --ease: cubic-bezier(.22,.8,.2,1); --spring: cubic-bezier(.34,1.56,.64,1);
+  --topbar-h: 68px; --tabbar-h: 0px; --gutter: clamp(16px, 4vw, 32px);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Bengali", "Kalpurush", "Nirmala UI", "Hind Siliguri", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f3f6fb; --bg-2: #e9eff8; --ink: #0d1530; --muted: #52607a; --faint: #7a869d;
+  --glass: rgba(255,255,255,.72); --glass-2: rgba(255,255,255,.9); --glass-strong: rgba(255,255,255,.88);
+  --line: rgba(15,23,42,.10); --line-2: rgba(15,23,42,.18);
+  --emerald: #07b383; --cyan: #0891b2; --violet: #7c3aed; --pink: #db2777; --amber: #d97706; --red: #e11d48; --blue: #2563eb;
+  --brand: #07b383; --brand-ink: #ffffff;
+  --grad: linear-gradient(120deg, #07b383 0%, #0891b2 45%, #7c3aed 100%);
+  --grad-text: linear-gradient(100deg, #059669 0%, #0891b2 40%, #7c3aed 80%, #c026d3 100%);
+  --shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 14px 40px -16px rgba(30,41,90,.25);
+  --shadow-lg: 0 30px 70px -26px rgba(30,41,90,.35);
+  --glow: 0 0 0 1px rgba(7,179,131,.35), 0 10px 34px -8px rgba(7,179,131,.4);
+  --ok: #059669; --warn: #b45309; --hot: #e11d48; --info: #2563eb;
+  color-scheme: light;
+}
+@media (min-width: 1800px) { :root { --topbar-h: 76px; } html { font-size: 112.5%; } }
+@media (min-width: 2400px) { html { font-size: 131%; } }
+@media (max-width: 899px) { :root { --tabbar-h: calc(64px + env(safe-area-inset-bottom, 0px)); --topbar-h: 60px; } }
