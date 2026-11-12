@@ -1,0 +1,36 @@
+name: Hourly editorial run
+# Checks official sources every hour, lets an LLM summarize NEW notices (every number/date is verified against the
+# source text), validates data/editorial.json and commits it. The site reads that file live from GitHub.
+on:
+  schedule: [{ cron: '7 * * * *' }]
+  workflow_dispatch:
+permissions: { contents: write }
+concurrency: { group: hourly-editorial, cancel-in-progress: false }
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Run editorial pipeline
+        env:
+          AI_PROVIDER: ${{ vars.AI_PROVIDER }}            # openai | anthropic (defaults by which key is present, else mock)
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          SITE_URL: ${{ vars.SITE_URL }}                  # e.g. https://your-site.example (optional, enables run log in Admin)
+          AI_WEBHOOK_SECRET: ${{ secrets.AI_WEBHOOK_SECRET }}
+        run: node scripts/editorial-ai.mjs
+      - name: Validate feed
+        run: node scripts/editorial-health.mjs --no-age
+      - name: Commit changes
+        run: |
+          if git diff --quiet data/editorial.json; then echo "No feed changes"; exit 0; fi
+          git config user.name "academic-admission-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/editorial.json
+          git commit -m "chore(editorial): hourly update"
+          git pull --rebase origin main
+          git push

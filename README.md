@@ -1,20 +1,34 @@
-# Academic Admission
+# Academic Admission 2.0
 
-Bangladesh academic notices, a student community, study resources, and private member dashboards.
+Bangladesh admission notices, deadline countdowns, study guidelines and a student community — now with a
+futuristic 3D UI, a full Super Admin console, an hourly AI editorial workflow, SEO, analytics and a PWA.
+Zero runtime dependencies; one Worker with D1 (database) and R2 (private files).
 
-## Public editorial updates
+## What's inside
+- **UI/UX** — dark/light gradient themes, WebGL aurora background, interactive 3D globe (Dhaka node), 3D tilt cards, smooth scroll reveal, count-up stats, deadline rings, command palette (`Ctrl/⌘+K` or `/`), mobile bottom tab bar, view transitions, installable PWA with offline fallback. Layouts verified from 320 px phones to 4K; `prefers-reduced-motion`, high-contrast and print styles respected.
+- **Super Admin** — Control center at `/admin`: overview, analytics, moderation (reports), content publishing, members (roles/suspension), Info Desk, AI workflow status, site settings (announcement banner, read-only mode, pause sign-ups, socials), audit log, full JSON export. Roles: member < moderator < admin < super admin (`ADMIN_EMAIL`).
+- **Database** — additive migration `drizzle/0001_super_admin.sql` (roles, status, pinned, views, deadlines, reports, audit_log, settings, analytics, ai_runs).
+- **Hourly AI workflow** — `.github/workflows/hourly-editorial.yml` + `scripts/editorial-ai.mjs`: checks official sources, LLM summarizes new notices, **every number/date is verified against the source text**, schema-validated, committed to `data/editorial.json`; runs are logged in Admin via a signed webhook.
+- **Deadlines** — explicit `deadline` field or conservative inference from Bangla/English notice text (marked `~`), countdown rings, one-click calendar (`.ics`).
+- **SEO & marketing** — server-rendered pages, canonical/OG/Twitter, JSON-LD (Organization, WebSite+SearchAction, ItemList, NewsArticle, DiscussionForumPosting, FAQPage, Breadcrumb), sitemap, robots, RSS, share buttons, UTM campaign analytics, OG image.
+- **Security** — strict CSP (no inline script/style), CSRF origin checks, HMAC webhook, XSS-safe renderers, validated private uploads, rate limits, audit log. See [SECURITY.md](SECURITY.md).
+- **Analytics** — first-party, cookie-less, no IPs stored, honors Do Not Track.
 
-`data/editorial.json` is the live editorial feed consumed from the default branch of this repository. The Site fetches it on demand, caches it briefly and falls back to the last usable feed if GitHub is unavailable. Feed changes do not require a Site rebuild. Admin notices and resources are stored separately.
+## Quick start
+```bash
+npm test        # build + 29 unit/integration tests (Node 22+)
+npm run dev     # http://localhost:8787 with demo data; sign in via /dev/as?u=owner
+```
+Deploy & operate: [docs/DEPLOY.md](docs/DEPLOY.md) · Admin guide: [docs/ADMIN.md](docs/ADMIN.md) · Env vars: [.env.example](.env.example)
 
-- Keep `schemaVersion` at 1 and update `checkedAt` in UTC after a successful source check.
-- Each item needs a stable lowercase hyphenated `id`, `category`, `title`, `summary`, `publishedAt` (YYYY-MM-DD), `source` and `url`. Keep titles within 160 characters, summaries within 800 and source labels within 100.
-- Notice categories: `Admission`, `Exam`, `Holiday`, `Official`, `Breaking`. Every notice needs an HTTPS source.
-- Study categories: `Trend`, `Tip`, `Video`, `Website`. Use an HTTPS URL for linked material. Keep up to 80 notices and 60 study items.
-- Prefer the issuing institution or government notice. For breaking news, check independent reliable reporting and link the clearest primary source available. Summarize in Bangla or Bangla-English, and preserve exact dates only when verified.
-- Keep recent, relevant entries and correct existing IDs in place. Never place personal data or private dashboard records in the public feed.
-
-## Build and hosting
-
-Use Node.js 22+ and run `node scripts/build.mjs`. The build bundles the Worker entry point and static assets in `dist/server/index.js`. ChatGPT Sites hosts the Worker with D1 (`DB`) and R2 (`BUCKET`). The hosting manifest in a Sites checkout also contains its own project ID. Apply the D1 migration in `drizzle/` before serving API requests.
-
-Sites provides ChatGPT sign-in and verified request identity. Configure `ADMIN_EMAIL` as a hosting secret for the owner. Profiles, member records and uploaded files belong to individual signed-in accounts. The earlier admission tracker is an optional private input held in the owner’s Sites checkout.
+## Layout
+```
+shared/    pure renderers + helpers (used by Worker SSR, browser and tests)
+worker/    Worker source (api, SEO, files, analytics) + HTML shell
+client/    browser modules (router, fx, pages, account, admin)
+styles/    CSS design system      public/  icons, manifest, service worker
+scripts/   build, dev server, D1/R2 shims, AI pipeline, health check
+data/      editorial.json (hourly feed) · sources.json (AI sources)
+drizzle/   SQL migrations         test/    node:test suites
+```
+> Upgrade note: apply the migration **before** deploying (a 503 "upgrade pending" is returned otherwise). Keep only one writer of `data/editorial.json`.

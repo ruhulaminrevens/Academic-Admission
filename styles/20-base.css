@@ -1,0 +1,50 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 16px); }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 1rem; line-height: 1.65; overflow-x: hidden; padding-bottom: var(--tabbar-h); text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+img, svg, canvas, video { max-width: 100%; display: block; }
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; letter-spacing: -.01em; overflow-wrap: anywhere; }
+h1 { font-size: clamp(1.9rem, 4.4vw + .6rem, 3.4rem); font-weight: 800; letter-spacing: -.025em; }
+h2 { font-size: clamp(1.25rem, 1.4vw + .9rem, 1.75rem); font-weight: 750; }
+h3 { font-size: 1.08rem; font-weight: 700; }
+h4 { font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .7em; }
+p { margin: 0 0 1em; overflow-wrap: anywhere; }
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+ul, ol { padding-left: 1.2em; }
+code { font-family: var(--mono); font-size: .88em; background: var(--glass); border: 1px solid var(--line); border-radius: 6px; padding: .1em .4em; overflow-wrap: anywhere; }
+kbd { font-family: var(--mono); font-size: .72rem; border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 6px; padding: .05em .45em; color: var(--muted); background: var(--glass); }
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+::selection { background: rgba(34,211,238,.35); }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link { position: fixed; left: 12px; top: -60px; z-index: 200; background: var(--brand); color: var(--brand-ink); padding: .6em 1em; border-radius: var(--r-sm); font-weight: 700; transition: top .2s; }
+.skip-link:focus { top: 12px; text-decoration: none; }
+.container { width: 100%; max-width: 75rem; margin-inline: auto; padding-inline: var(--gutter); }
+.container.narrow, .narrow { max-width: 50rem; }
+.muted { color: var(--muted); } .small { font-size: .84rem; } .center { text-align: center; margin-top: 1.2rem; } .grow { flex: 1 1 14rem; min-width: 0; }
+.stack { display: grid; gap: 1.1rem; align-content: start; }
+.gradient-text { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; background-size: 200% 100%; animation: sheen 9s ease-in-out infinite alternate; }
+@keyframes sheen { to { background-position: 100% 0; } }
+main { outline: none; display: block; }
+#view { min-height: 60vh; }
+.icon { flex: none; vertical-align: -.2em; display: inline-block; }
+.noscript { text-align: center; padding: 1rem; background: var(--glass); }
+
+/* ---- background layers ---- */
+.bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: radial-gradient(120% 80% at 50% -10%, var(--bg-2), var(--bg)); }
+#aurora { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .9; }
+.bg-mesh { position: absolute; inset: 0; background:
+  radial-gradient(40rem 28rem at 8% 6%, rgba(16,230,161,.14), transparent 60%),
+  radial-gradient(44rem 30rem at 96% 14%, rgba(139,92,246,.16), transparent 60%),
+  radial-gradient(40rem 30rem at 50% 108%, rgba(34,211,238,.12), transparent 60%); }
+:root[data-theme="light"] .bg-mesh { opacity: .8; }
+.bg-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 56px 56px; opacity: .35; -webkit-mask-image: radial-gradient(70% 55% at 50% 0%, #000 10%, transparent 75%); mask-image: radial-gradient(70% 55% at 50% 0%, #000 10%, transparent 75%); }
+.progress { position: fixed; z-index: 120; inset: 0 0 auto 0; height: 3px; pointer-events: none; }
+.progress i { display: block; height: 100%; background: var(--grad); transform-origin: 0 50%; transform: scaleX(0); box-shadow: 0 0 14px rgba(34,211,238,.7); }
+
+/* ---- reveal (uses translate/scale so it never fights the 3D tilt transform) ---- */
+[data-reveal] { transition: opacity .8s var(--ease) var(--d, 0ms), translate .8s var(--ease) var(--d, 0ms), scale .8s var(--ease) var(--d, 0ms); }
+.reveal-ready [data-reveal]:not(.in) { opacity: 0; translate: 0 26px; scale: .985; }
