@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-12T13:08:30Z",
+  "checkedAt": "2026-11-12T14:05:15Z",
   "notices": [
     {
       "id": "shed-government-secondary-admission-policy-2027",
@@ -37,6 +37,15 @@
       "publishedAt": "2026-11-11",
       "source": "জগন্নাথ বিশ্ববিদ্যালয়",
       "url": "https://jnu.ac.bd/newsite/noticeview/1"
+    },
+    {
+      "id": "shed-non-government-school-admission-policy-2027",
+      "category": "Official",
+      "title": "বেসরকারি স্কুল ও স্কুল অ্যান্ড কলেজে ভর্তি নীতিমালা ২০২৭",
+      "summary": "মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ ১০ নভেম্বর ২০২৬ তারিখে বেসরকারি স্কুল ও স্কুল অ্যান্ড কলেজের মাধ্যমিক, নিম্ন মাধ্যমিক ও সংযুক্ত প্রাথমিক স্তরে ২০২৭ শিক্ষাবর্ষের ভর্তি নীতিমালা প্রকাশ করেছে। বিস্তারিত নিয়ম ও সংযুক্তি মূল নীতিমালায় দেখুন।",
+      "publishedAt": "2026-11-10",
+      "source": "মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ",
+      "url": "https://shed.gov.bd/pages/moedu-policies/বেসরকারি-স্কুল-স্কুল-এন্ড-কলেজে-মাধ্যমিক-নিম্ন-মাধ্যমিক-ও-সংযুক্ত-প্রাথমিক-স্তর-শিক্ষার্থী-ভর্তি-নীতিমালা-২০২৭-4eaqa4-6af3e03e34f2d6299b637435"
     },
     {
       "id": "du-undergraduate-admission-2026-27",
