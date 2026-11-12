@@ -1,15 +1,60 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-12T11:41:59.211Z",
+  "checkedAt": "2026-11-12T13:08:30Z",
   "notices": [
+    {
+      "id": "shed-government-secondary-admission-policy-2027",
+      "category": "Official",
+      "title": "সরকারি মাধ্যমিক বিদ্যালয়ে ভর্তি নীতিমালা ২০২৭ (সংশোধিত)",
+      "summary": "মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ ১২ নভেম্বর ২০২৬ তারিখে সরকারি মাধ্যমিক বিদ্যালয়ে ২০২৭ শিক্ষাবর্ষের সংশোধিত ভর্তি নীতিমালা প্রকাশ করেছে। সংশোধিত নীতিমালার সংযুক্তি মূল বিজ্ঞপ্তিতে দেখুন।",
+      "publishedAt": "2026-11-12",
+      "source": "মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ",
+      "url": "https://shed.gov.bd/pages/notices/সরকারি-মাধ্যমিক-বিদ্যালয়ে-শিক্ষার্থী-ভর্তির-নীতিমালা-২০২৭-সংশোধিত-qsyog4-6af58d0e2395180813ac59f8"
+    },
+    {
+      "id": "hsc-supplementary-exam-routine-2026",
+      "category": "Exam",
+      "title": "এইচএসসি সাপ্লিমেন্টারি পরীক্ষা ২০২৬-এর সময়সূচি প্রকাশ",
+      "summary": "ঢাকা ও সিলেট শিক্ষা বোর্ডের নোটিশে ১২ নভেম্বর ২০২৬ তারিখে এইচএসসি সাপ্লিমেন্টারি পরীক্ষার সময়সূচি প্রকাশিত হয়েছে। বিষয়ভিত্তিক তারিখ ও সময়ের জন্য বোর্ডের সংযুক্ত রুটিন দেখুন।",
+      "publishedAt": "2026-11-12",
+      "source": "সিলেট শিক্ষা বোর্ড",
+      "url": "https://sylhetboard.gov.bd/notices/2029"
+    },
     {
       "id": "kuet-admission-guidelines-2026-27",
       "category": "Admission",
       "title": "KUET Undergraduate Admission 2026–27 guidelines",
-      "summary": "KUET-এর official undergraduate admission portal-এ ১১ নভেম্বর ২০২৬ তারিখের Admission Guidelines প্রকাশিত আছে। আবেদন, যোগ্যতা ও পরীক্ষার বিস্তারিত portal থেকে দেখুন।",
+      "summary": "কুয়েটের ১১ নভেম্বর ২০২৬ তারিখের ভর্তি নির্দেশিকা প্রকাশিত। আবেদন ও ফি জমা ১০ ডিসেম্বর ২০২৬ পর্যন্ত। ভর্তি পরীক্ষা ৮ জানুয়ারি ২০২৭, খুলনা, ঢাকা ও রাজশাহীতে।",
       "publishedAt": "2026-11-11",
       "source": "KUET Undergraduate Admission",
       "url": "https://admission.kuet.ac.bd/"
+    },
+    {
+      "id": "jnu-undergraduate-admission-2026-27",
+      "category": "Admission",
+      "title": "জগন্নাথ বিশ্ববিদ্যালয়ের স্নাতক ও বিবিএ ভর্তি বিজ্ঞপ্তি ২০২৬–২৭",
+      "summary": "জগন্নাথ বিশ্ববিদ্যালয়ের নোটিশ বোর্ডে ১১ নভেম্বর ২০২৬ তারিখে স্নাতক (সম্মান) ও বিবিএ প্রথম বর্ষের ভর্তি বিজ্ঞপ্তি প্রকাশিত হয়েছে। আবেদন ও পরীক্ষার তারিখের জন্য ওই বিজ্ঞপ্তি দেখুন।",
+      "publishedAt": "2026-11-11",
+      "source": "জগন্নাথ বিশ্ববিদ্যালয়",
+      "url": "https://jnu.ac.bd/newsite/noticeview/1"
+    },
+    {
+      "id": "du-undergraduate-admission-2026-27",
+      "category": "Admission",
+      "title": "ঢাকা বিশ্ববিদ্যালয়ে স্নাতক ভর্তি আবেদন ২৫ নভেম্বর পর্যন্ত",
+      "summary": "২০২৬–২৭ শিক্ষাবর্ষে আবেদন ও ফি জমা ২৫ নভেম্বর ২০২৬ রাত ১১:৫৯ পর্যন্ত। ভর্তি পরীক্ষার তারিখ আইবিএ ৫ ডিসেম্বর, বিজ্ঞান ১২ ডিসেম্বর, কলা-আইন-সামাজিক বিজ্ঞান ১৯ ডিসেম্বর, চারুকলা ২২ ডিসেম্বর এবং ব্যবসায় শিক্ষা ২৬ ডিসেম্বর ২০২৬।",
+      "publishedAt": "2026-11-09",
+      "source": "ঢাকা বিশ্ববিদ্যালয়",
+      "url": "https://du.ac.bd/du_post_details/post/29137"
+    },
+    {
+      "id": "kuet-winter-vacation-2027-revised",
+      "category": "Holiday",
+      "title": "কুয়েটের শীতকালীন ছুটির সংশোধিত সময়সূচি",
+      "summary": "কুয়েট রেজিস্ট্রার দপ্তরের ৮ নভেম্বর ২০২৬ তারিখের নোটিশ অনুযায়ী শীতকালীন ছুটি পুনর্নির্ধারণ করে ৮–১৪ জানুয়ারি ২০২৭ করা হয়েছে।",
+      "publishedAt": "2026-11-08",
+      "source": "KUET Office of the Registrar",
+      "url": "https://www.kuet.ac.bd/notice/all"
     }
   ],
   "study": [
