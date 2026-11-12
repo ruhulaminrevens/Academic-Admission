@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bangladesh academic notices, admissions, study resources and student community.">
+  <title>Academic Admission | Bangladesh</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/client.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <button class="menu-button" id="menu" aria-controls="sidebar" aria-expanded="false">☰ Menu</button>
+    <aside class="sidebar" id="sidebar">
+      <a href="#home" class="brand"><span class="mark" aria-hidden="true">A</span><span>Academic<br>Admission</span></a>
+      <nav id="nav" aria-label="Main navigation">
+        <a href="#home"><span aria-hidden="true">⌂</span> Home</a>
+        <a href="#notice"><span aria-hidden="true">▤</span> Notice Board</a>
+        <a href="#study"><span aria-hidden="true">◇</span> Study &amp; Guidelines</a>
+        <a href="#account"><span aria-hidden="true">◎</span> Account</a>
+        <a href="#admin" id="adminNav" hidden><span aria-hidden="true">⚙</span> Admin</a>
+      </nav>
+      <div class="sidebar-footer" id="session"></div>
+    </aside>
+    <main id="main">
+      <header id="pageHeader" class="hero">
+        <div class="hero-label" id="heroLabel"></div>
+        <h1 id="heading" tabindex="-1">Academic Admission</h1>
+        <p id="intro">বাংলাদেশের admission updates, study resources ও student community।</p>
+      </header>
+      <div id="flash" role="status" aria-live="polite" hidden></div>
+      <div id="view" aria-busy="true"><p class="empty">Loading…</p></div>
+    </main>
+  </div>
+  <noscript><p>এই dashboard চালাতে JavaScript enable করুন।</p></noscript>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-12T11:41:59.211Z",
+  "notices": [
+    {
+      "id": "kuet-admission-guidelines-2026-27",
+      "category": "Admission",
+      "title": "KUET Undergraduate Admission 2026–27 guidelines",
+      "summary": "KUET-এর official undergraduate admission portal-এ ১১ নভেম্বর ২০২৬ তারিখের Admission Guidelines প্রকাশিত আছে। আবেদন, যোগ্যতা ও পরীক্ষার বিস্তারিত portal থেকে দেখুন।",
+      "publishedAt": "2026-11-11",
+      "source": "KUET Undergraduate Admission",
+      "url": "https://admission.kuet.ac.bd/"
+    }
+  ],
+  "study": [
+    {
+      "id": "active-recall-weekly",
+      "category": "Tip",
+      "title": "Weekly revision with active recall",
+      "summary": "প্রথমে বই বন্ধ করে ৫টি প্রশ্নের উত্তর লিখুন। উত্তর মিলিয়ে দুর্বল topic চিহ্নিত করুন এবং পরের study session-এর শুরুতে আবার পরীক্ষা দিন।",
+      "publishedAt": "2026-11-12",
+      "source": "Academic Admission editorial",
+      "url": ""
+    },
+    {
+      "id": "khan-academy-science",
+      "category": "Video",
+      "title": "Khan Academy Science lessons",
+      "summary": "Biology, chemistry ও physics-এর lesson, videos এবং practice exercises।",
+      "publishedAt": "2026-11-12",
+      "source": "Khan Academy",
+      "url": "https://www.khanacademy.org/science"
+    },
+    {
+      "id": "ugc-bangladesh",
+      "category": "Website",
+      "title": "University Grants Commission of Bangladesh",
+      "summary": "উচ্চশিক্ষার notices, বৃত্তি এবং academic information-এর সরকারি উৎস।",
+      "publishedAt": "2026-11-12",
+      "source": "UGC Bangladesh",
+      "url": "https://ugc.gov.bd/"
+    }
+  ]
+}
