@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-12T14:57:39Z",
+  "checkedAt": "2026-11-12T16:05:46Z",
   "notices": [
     {
       "id": "shed-government-secondary-admission-policy-2027",
@@ -55,6 +55,15 @@
       "publishedAt": "2026-11-09",
       "source": "ঢাকা বিশ্ববিদ্যালয়",
       "url": "https://du.ac.bd/du_post_details/post/29137"
+    },
+    {
+      "id": "aaub-undergraduate-admission-test-rescheduled-2026-27",
+      "category": "Admission",
+      "title": "এএইউবির স্নাতক ভর্তি পরীক্ষা ৩০ জানুয়ারি ২০২৭",
+      "summary": "৯ নভেম্বর ২০২৬-এর সংশোধিত বিজ্ঞপ্তি অনুযায়ী অ্যাভিয়েশন অ্যান্ড অ্যারোস্পেস বিশ্ববিদ্যালয়, বাংলাদেশের ২০২৬–২৭ শিক্ষাবর্ষের স্নাতক ভর্তি পরীক্ষা ৫ ডিসেম্বর ২০২৬ থেকে পিছিয়ে ৩০ জানুয়ারি ২০২৭ করা হয়েছে। পরীক্ষাকেন্দ্র বিএএফ শাহীন কলেজ, ঢাকা এবং বিশ্ববিদ্যালয়ের লালমনিরহাট ক্যাম্পাস।",
+      "publishedAt": "2026-11-09",
+      "source": "অ্যাভিয়েশন অ্যান্ড অ্যারোস্পেস বিশ্ববিদ্যালয়, বাংলাদেশ",
+      "url": "https://aaub.edu.bd/public/storage/upload/notice-file/261109075639-296080-11092026134227.pdf"
     },
     {
       "id": "kuet-winter-vacation-2027-revised",
