@@ -162,3 +162,50 @@ test('private legacy archive is Super Admin only', async () => {
   assert.equal((await anon('/private/admission-tracker')).status, 401);
   assert.equal((await admin('/private/admission-tracker')).status, 403);
 });
+
+test('admission calendar includes source-backed pilot and keeps application plans private', async () => {
+  const calendar = await anon('/api/admissions');
+  assert.equal(calendar.status, 200);
+  assert.equal(calendar.body.length, 3);
+  assert.match((await anon('/admissions')).body, /ভর্তি ক্যালেন্ডার/);
+  assert.equal((await anon('/api/admission-plans')).status, 401);
+  const path = '/api/admission-plans/kuet-2026';
+  assert.equal((await rahim(path, { method: 'PUT', body: { stage: 'paid' } })).status, 200);
+  assert.equal((await rahim('/api/admission-plans')).body.plans[0].stage, 'paid');
+  assert.equal((await admin('/api/admission-plans')).body.plans.length, 0);
+  assert.equal((await admin(path, { method: 'DELETE' })).status, 200);
+  assert.equal((await rahim('/api/admission-plans')).body.plans.length, 1);
+  assert.equal((await rahim('/api/admission-reminders', { method: 'PUT', body: { enabled: true } })).status, 503);
+  assert.equal((await anon('/api/hooks/admission-jobs', { method: 'POST' })).status, 401);
+});
+
+test('admission review publishes a revision once and keeps the old deadline', async () => {
+  const id = 'du-science-2026';
+  const { items } = (await admin('/api/admin/admissions')).body;
+  const item = items.find(entry => entry.id === id);
+  const review = { ...item, end: '2026-11-26T23:59+06:00', evidence: 'Integration-test source correction.' };
+  const path = '/api/admin/admissions/' + id;
+  assert.equal((await rahim(path, { method: 'POST', body: review })).status, 403);
+  assert.equal((await admin(path, { method: 'POST', body: review })).status, 200);
+  assert.equal((await admin(path, { method: 'POST', body: review })).status, 409);
+  const updated = (await anon('/api/admissions')).body.find(entry => entry.id === id);
+  assert.equal(updated.end, review.end);
+  assert.equal(updated.history[0].before.end, item.end);
+  assert.equal(updated.history[0].after.end, review.end);
+});
+
+test('Google login stays off without credentials and rejects an unbound callback', async () => {
+  assert.equal((await anon('/api/session')).body.googleEnabled, false);
+  assert.equal((await anon('/auth/google')).status, 404);
+  const testOrigin = 'https://example.test';
+  const { default: worker } = await import('../dist/server/index.js');
+  const env = { ...dev.env, SITE_URL: testOrigin, GOOGLE_CLIENT_ID: 'fake', GOOGLE_CLIENT_SECRET: 'fake', GOOGLE_STATE_SECRET: 'test-state' };
+  const start = await worker.fetch(new Request(testOrigin + '/auth/google'), env, {});
+  assert.equal(start.status, 303);
+  const location = new URL(start.headers.get('Location'));
+  assert.equal(location.origin, 'https://accounts.google.com');
+  assert.equal(location.searchParams.get('code_challenge_method'), 'S256');
+  assert.match(start.headers.get('Set-Cookie'), /HttpOnly; Secure; SameSite=Lax/);
+  const callback = await worker.fetch(new Request(testOrigin + '/auth/google/callback?state=wrong&code=test'), env, {});
+  assert.equal(callback.headers.get('Location'), '/account?auth=state');
+});

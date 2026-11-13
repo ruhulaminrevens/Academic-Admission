@@ -39,12 +39,12 @@ async function siteStats(env) {
 
 route('GET', '/api/session', async c => {
   const settings = await getSettings(c.env);
-  return json({ ...sessionUser(c.user), admin: c.user.rank >= 2, can: { moderate: c.user.rank >= 1, admin: c.user.rank >= 2, owner: c.user.rank >= 3 }, site: publicSettings(settings), version: assets.version });
+  return json({ ...sessionUser(c.user), googleEnabled: googleEnabled(c.env), googleLinked: googleEnabled(c.env) && !!c.user.id && Boolean(await one(c.env, 'SELECT subject FROM google_identities WHERE owner=?', c.user.id)), provider: c.user.provider, admin: c.user.rank >= 2, can: { moderate: c.user.rank >= 1, admin: c.user.rank >= 2, owner: c.user.rank >= 3 }, site: publicSettings(settings), version: assets.version });
 });
 
 route('GET', '/api/health', async c => {
   const result = { ok: true, version: assets.version, time: new Date().toISOString(), db: false, bucket: Boolean(c.env.BUCKET), schema: false };
-  try { await one(c.env, 'SELECT 1 AS ok'); result.db = true; await one(c.env, 'SELECT COUNT(*) AS n FROM audit_log'); result.schema = true; } catch { result.ok = false; }
+  try { await one(c.env, 'SELECT 1 AS ok'); result.db = true; await one(c.env, 'SELECT id FROM admission_revisions LIMIT 1'); result.schema = true; } catch { result.ok = false; }
   const feedState = await editorial(c.env);
   result.editorial = { checkedAt: feedState.checkedAt, live: feedState.live, ageMinutes: Math.round((Date.now() - Date.parse(feedState.checkedAt)) / 60000) };
   return json(result, result.ok ? 200 : 503);
@@ -245,7 +245,9 @@ route('GET', '/api/account/export', async c => {
   const files = (await c.env.BUCKET.list({ prefix: `users/${c.user.id}/`, limit: 12, include: ['customMetadata'] })).objects
     .map(file => ({ slot: file.key.split('/').pop(), name: file.customMetadata?.name || 'Document', size: file.size, uploaded: file.uploaded }));
   const profile = { name: c.user.profile.name, focus: c.user.profile.focus, goal: c.user.profile.goal, created: c.user.profile.created, role: c.user.role, status: c.user.status };
-  return response(JSON.stringify({ exportedAt: new Date().toISOString(), profile, posts, comments, bookmarks, reactions, tickets, files }, null, 2),
+  const applications = await rows(c.env, 'SELECT circular,stage,updated FROM admission_plans WHERE owner=?', c.user.id);
+  const reminders = await one(c.env, 'SELECT email,enabled,opted_in FROM admission_reminders WHERE owner=?', c.user.id);
+  return response(JSON.stringify({ applications, reminders, exportedAt: new Date().toISOString(), profile, posts, comments, bookmarks, reactions, tickets, files }, null, 2),
     'application/json; charset=utf-8', { headers: { 'Content-Disposition': 'attachment; filename="academic-admission-my-data.json"' } });
 });
 
@@ -254,7 +256,12 @@ route('DELETE', '/api/account', async c => {
   const { confirm } = await input(c.request);
   required(confirm === 'DELETE', 400, 'Type DELETE to confirm.');
   const id = c.user.id;
+  const prefix = `users/${id}/`;
+  const listed = await c.env.BUCKET.list({ prefix, limit: 100 });
+  if (listed.objects.length) await c.env.BUCKET.delete(listed.objects.map(file => file.key));
   await c.env.DB.batch([
+    db(c.env, 'DELETE FROM google_sessions WHERE owner=?', id),
+    db(c.env, 'DELETE FROM google_identities WHERE owner=?', id),
     db(c.env, "DELETE FROM reports WHERE reporter = ? OR post IN (SELECT id FROM posts WHERE author = ?) OR (kind = 'comment' AND target IN (SELECT id FROM comments WHERE author = ?))", id, id, id),
     db(c.env, 'DELETE FROM reactions WHERE author = ?', id),
     db(c.env, 'DELETE FROM bookmarks WHERE author = ?', id),
@@ -263,9 +270,6 @@ route('DELETE', '/api/account', async c => {
     db(c.env, 'DELETE FROM tickets WHERE owner = ?', id),
     db(c.env, 'DELETE FROM profiles WHERE id = ?', id),
   ]);
-  const prefix = `users/${id}/`;
-  const listed = await c.env.BUCKET.list({ prefix, limit: 100 });
-  if (listed.objects.length) await c.env.BUCKET.delete(listed.objects.map(file => file.key));
   statsCache.at = 0;
   return json({ ok: true });
 });

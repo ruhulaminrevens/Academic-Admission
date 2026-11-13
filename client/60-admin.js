@@ -35,6 +35,7 @@ const adminTabs = [
   { key: 'overview', label: 'Overview', ic: 'grid', rank: 2 },
   { key: 'analytics', label: 'Analytics', ic: 'chart', rank: 2 },
   { key: 'moderation', label: 'Moderation', ic: 'flag', rank: 1 },
+  { key: 'admissions', label: 'Admission review', ic: 'calendar', rank: 2 },
   { key: 'content', label: 'Content', ic: 'file', rank: 2 },
   { key: 'members', label: 'Members', ic: 'users', rank: 2 },
   { key: 'desk', label: 'Info Desk', ic: 'mail', rank: 2 },
@@ -85,6 +86,7 @@ async function refreshBadges(view) {
 const rankedOverviewCounts = data => Array.isArray(data) ? { openReports: data.length, openTickets: 0 } : data.counts;
 
 const adminPanels = {
+  admissions: renderAdmissionReview,
   async overview(main) {
     const data = await api('/admin/overview');
     const c = data.counts;

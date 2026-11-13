@@ -1,0 +1,105 @@
+[
+  {
+    "id": "du-science-2026",
+    "institution": "ঢাকা বিশ্ববিদ্যালয়",
+    "unit": "বিজ্ঞান ইউনিট",
+    "session": "2026–27",
+    "country": "BD",
+    "level": "undergraduate",
+    "timezone": "Asia/Dhaka",
+    "source": "https://admission.eis.du.ac.bd/bn/408b7c8ad06e4d9954fa2d948a01f508/5524202192_1",
+    "apply": "https://admission.eis.du.ac.bd/",
+    "evidence": "গুরুত্বপূর্ণ তারিখ সমূহ → বিজ্ঞান ইউনিট। আবেদন ও ফি ১১–২৫ নভেম্বর, প্রবেশপত্র ২ ডিসেম্বর থেকে, পরীক্ষা ১২ ডিসেম্বর।",
+    "start": "2026-11-11T12:00+06:00",
+    "end": "2026-11-25T23:59+06:00",
+    "admit": "2026-12-02T15:00+06:00",
+    "exam": "2026-12-12T11:00+06:00",
+    "rules": {
+      "sscYears": [
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "hscYears": [
+        2026
+      ],
+      "byGroup": {
+        "Science": {
+          "ssc": 3.5,
+          "hsc": 3.5,
+          "total": 8
+        },
+        "Arts": {
+          "ssc": 3,
+          "hsc": 3,
+          "total": 7.5
+        },
+        "Commerce": {
+          "ssc": 3,
+          "hsc": 3,
+          "total": 7.5
+        }
+      },
+      "source": "https://admission.eis.du.ac.bd/bn/b45de047fde97gsg488cadae3cfe8e88dc01",
+      "note": "সাধারণ বাংলাদেশি বোর্ডের প্রাথমিক আবেদন শর্ত, GPA চতুর্থ বিষয়সহ। বিভাগভেদে অতিরিক্ত শর্ত থাকতে পারে।",
+      "complete": true
+    }
+  },
+  {
+    "id": "kuet-2026",
+    "institution": "খুলনা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়",
+    "unit": "স্নাতক",
+    "session": "2026–27",
+    "country": "BD",
+    "level": "undergraduate",
+    "timezone": "Asia/Dhaka",
+    "source": "https://admission.kuet.ac.bd/uploads/notices/2.Prospectus-Ban.pdf",
+    "apply": "https://admission.kuet.ac.bd/",
+    "evidence": "ভর্তি নির্দেশিকা §৩ ও §৫। ১০ ডিসেম্বর বিকেল ৫টা পর্যন্ত আবেদন ও ফি, ৮ জানুয়ারি সকাল ৯:৩০-এ পরীক্ষা।",
+    "start": "2026-11-10T10:00+06:00",
+    "end": "2026-12-10T17:00+06:00",
+    "admit": null,
+    "exam": "2027-01-08T09:30+06:00",
+    "rules": {
+      "groups": [
+        "Science"
+      ],
+      "sscYears": [
+        2023,
+        2024
+      ],
+      "hscYears": [
+        2026
+      ],
+      "ssc": 4,
+      "subjects": {
+        "math": 3,
+        "physics": 3,
+        "chemistry": 3,
+        "english": 3
+      },
+      "source": "https://admission.kuet.ac.bd/uploads/notices/2.Prospectus-Ban.pdf",
+      "note": "§৫ অনুযায়ী বাংলাদেশি SSC/HSC বোর্ডের প্রাথমিক শর্ত। জীববিজ্ঞানের শর্ত, বিভাগভেদে যোগ্যতা এবং সমমানের পরীক্ষা মূল নির্দেশিকায় দেখুন।",
+      "complete": false
+    }
+  },
+  {
+    "id": "jnu-a-2026",
+    "institution": "জগন্নাথ বিশ্ববিদ্যালয়",
+    "unit": "A ইউনিট",
+    "session": "2026–27",
+    "country": "BD",
+    "level": "undergraduate",
+    "timezone": "Asia/Dhaka",
+    "source": "https://jnu.ac.bd/assets/notice/9ea6d52bc7a947d600093ba06052e3cc.pdf",
+    "apply": "https://admission.jnu.ac.bd/",
+    "evidence": "১১ নভেম্বরের স্বাক্ষরিত বিজ্ঞপ্তি, পৃষ্ঠা ১। আবেদন ২৫ নভেম্বর দুপুর ১২টা থেকে ১০ ডিসেম্বর রাত ১১:৫৯। A ইউনিট পরীক্ষা ১ জানুয়ারি।",
+    "start": "2026-11-25T12:00+06:00",
+    "end": "2026-12-10T23:59+06:00",
+    "admit": null,
+    "exam": "2027-01-01T10:00+06:00",
+    "rules": null,
+    "eligibilityNote": "অফিসিয়াল বিজ্ঞপ্তির বাংলা ও ইংরেজি অংশে HSC পাশের বছর ভিন্ন। প্রতিষ্ঠান থেকে নিশ্চিত করুন।"
+  }
+]

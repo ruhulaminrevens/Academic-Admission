@@ -171,7 +171,7 @@ function renderSession() {
   if (slot) {
     if (profile) slot.innerHTML = `<a class="session-chip" href="/account" data-link title="My account">${avatar(profile.name)}<span class="session-name">${esc(truncate(profile.name, 18))}</span></a>`;
     else if (signedIn) slot.innerHTML = '<a class="btn btn--primary btn--sm" href="/account" data-link>Create profile</a>';
-    else slot.innerHTML = `<a class="btn btn--primary btn--sm" href="/signin-with-chatgpt?return_to=${encodeURIComponent(location.pathname)}" target="_top">Sign in</a>`;
+    else slot.innerHTML = `<a class="btn btn--primary btn--sm" href="/account" data-link>Sign in</a>`;
   }
   const admin = $('#adminNav');
   if (admin) admin.hidden = !(rank >= 1);
