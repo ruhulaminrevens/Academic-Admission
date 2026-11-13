@@ -38,7 +38,7 @@ function buildHead(meta, origin) {
   const url = origin + meta.path;
   const title = meta.path === '/' ? `${SITE_NAME} — Bangladesh admission notices, study & community` : `${meta.title} | ${SITE_NAME}`;
   const description = truncate(meta.description, 200);
-  const image = origin + '/og-image.png';
+  const image = origin + (meta.image || '/og-image.png');
   const robots = meta.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
   return [
     `<title>${esc(title)}</title>`,
@@ -109,9 +109,9 @@ async function resolvePage(path, url, env, ctx, origin) {
     const section = await loadSection(env, 'notice');
     const iso = new Date(item.created).toISOString();
     return { content: pageNotice({ item, related: section.items.filter(other => other.id !== item.id && other.category === item.category).slice(0, 3) }, ctx), meta: {
-      title: truncate(item.title, 80), path, type: 'article', published: iso, description: item.summary,
+      title: truncate(item.title, 80), path, type: 'article', published: iso, description: item.summary, image: assets.files['/og-' + item.id + '.png'] ? '/og-' + item.id + '.png' : '/og-image.png',
       jsonld: [{ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: truncate(item.title, 110), description: truncate(item.summary, 250), datePublished: iso, dateModified: iso, inLanguage: 'bn',
-        mainEntityOfPage: origin + path, image: [origin + '/og-image.png'], isBasedOn: item.url || undefined,
+        mainEntityOfPage: origin + path, image: [origin + (assets.files['/og-' + item.id + '.png'] ? '/og-' + item.id + '.png' : '/og-image.png')], isBasedOn: item.url || undefined,
         author: { '@type': 'Organization', name: item.source }, publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: origin + '/icon-512.png' } } },
         breadcrumb(origin, [['Home', '/'], ['Notice Board', '/notices'], [truncate(item.title, 60), path]])],
     } };
@@ -151,6 +151,10 @@ async function resolvePage(path, url, env, ctx, origin) {
   }
   if (path === '/privacy') return { content: pagePrivacy(), meta: { title: 'Privacy Policy', path, description: 'আমরা কোন তথ্য সংরক্ষণ করি এবং আপনি কীভাবে নিয়ন্ত্রণ করবেন।' } };
   if (path === '/terms') return { content: pageTerms(), meta: { title: 'Terms of Use', path, description: 'Academic Admission ব্যবহারের শর্তাবলি।' } };
+  if (path === '/admissions') return { content: pageAdmissions(await admissionCalendar(env)),
+    meta: { title: 'ভর্তি ক্যালেন্ডার ২০২৬–২৭', path, description: 'বাংলাদেশের অফিসিয়াল বিশ্ববিদ্যালয় ভর্তি সময়সূচি এবং আবেদন পরিকল্পনা।' } };
+  if (path === '/applications') return { content: pageHead('Student dashboard', 'My Applications', 'নিজের আবেদন পরিকল্পনা দেখুন।'),
+    meta: { title: 'My Applications', path, description: 'Private application shortlist', noindex: true } };
   if (path === '/account' || path === '/admin') {
     return { content: `<section class="container page-head"><h1 id="heading" tabindex="-1">${path === '/admin' ? 'Admin console' : 'Account'}</h1><div class="skeleton skeleton--block"></div></section>`,
       meta: { title: path === '/admin' ? 'Admin console' : 'Account', path, description: 'Private workspace', noindex: true } };
@@ -196,7 +200,7 @@ async function dynamicPublic(path, env, url) {
     const [section, posts] = await Promise.all([loadSection(env, 'notice'), rows(env, 'SELECT id, created FROM posts ORDER BY created DESC LIMIT 500')]);
     const day = ms => new Date(ms).toISOString().slice(0, 10);
     const today = day(Date.now());
-    const entries = [['/', today, 'hourly', 1], ['/notices', today, 'hourly', 0.9], ['/study', today, 'daily', 0.7], ['/community', today, 'daily', 0.7], ['/about', today, 'monthly', 0.4], ['/privacy', today, 'yearly', 0.2], ['/terms', today, 'yearly', 0.2],
+    const entries = [['/', today, 'hourly', 1], ['/notices', today, 'hourly', 0.9], ['/admissions', today, 'hourly', 0.9], ['/study', today, 'daily', 0.7], ['/community', today, 'daily', 0.7], ['/about', today, 'monthly', 0.4], ['/privacy', today, 'yearly', 0.2], ['/terms', today, 'yearly', 0.2],
       ...section.items.slice(0, 200).map(item => ['/notice/' + item.id, day(item.created), 'weekly', 0.8]),
       ...posts.map(post => ['/post/' + post.id, day(post.created), 'weekly', 0.5])];
     const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(([loc, lastmod, freq, priority]) =>

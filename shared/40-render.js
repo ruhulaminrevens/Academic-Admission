@@ -7,6 +7,7 @@ const rankOf = ctx => ctx?.user?.rank || 0;
 
 export const navItems = [
   { href: '/', label: 'Home', icon: 'home' },
+  { href: '/admissions', label: 'Calendar', icon: 'calendar' },
   { href: '/notices', label: 'Notice Board', short: 'Notices', icon: 'bell' },
   { href: '/study', label: 'Study & Guidelines', short: 'Study', icon: 'book' },
   { href: '/community', label: 'Community', icon: 'users' },
@@ -14,7 +15,7 @@ export const navItems = [
 ];
 
 export function renderHeader() {
-  const links = navItems.slice(0, 4).map(item =>
+  const links = navItems.slice(0, -1).map(item =>
     `<a href="${item.href}" data-link data-nav="${item.href}">${icon(item.icon, 17)}<span>${esc(item.label)}</span></a>`).join('');
   return `<div class="container topbar-inner">
     <a class="brand" href="/" data-link aria-label="Academic Admission — Home">${logoMark(36)}<span class="brand-text">Academic<br>Admission</span></a>
@@ -46,7 +47,7 @@ export function renderFooter(settings = {}) {
       ${socials ? `<div class="socials">${socials}</div>` : ''}
     </div>
     <div><h4>Explore</h4>
-      <a href="/notices" data-link>Notice Board</a><a href="/study" data-link>Study &amp; Guidelines</a>
+      <a href="/admissions" data-link>ভর্তি ক্যালেন্ডার</a><a href="/notices" data-link>Notice Board</a><a href="/study" data-link>Study &amp; Guidelines</a>
       <a href="/community" data-link>Community</a><a href="/account" data-link>Account</a></div>
     <div><h4>Stay updated</h4>
       <a href="/feed.xml">${icon('rss', 14)} RSS feed</a><a href="/sitemap.xml">Sitemap</a>

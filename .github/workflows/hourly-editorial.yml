@@ -25,12 +25,23 @@ jobs:
         run: node scripts/editorial-ai.mjs
       - name: Validate feed
         run: node scripts/editorial-health.mjs --no-age
+      - name: Check official admission revisions
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: node scripts/admission-scan.mjs
       - name: Commit changes
+        if: ${{ !cancelled() }}
         run: |
-          if git diff --quiet data/editorial.json; then echo "No feed changes"; exit 0; fi
+          if git diff --quiet data/editorial.json data/admission-observations.json; then echo "No feed changes"; exit 0; fi
           git config user.name "academic-admission-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/editorial.json
+          git add data/editorial.json data/admission-observations.json
           git commit -m "chore(editorial): hourly update"
           git pull --rebase origin main
           git push
+      - name: Sync admission changes and deliver opted-in reminders
+        if: ${{ !cancelled() }}
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          ADMISSION_JOB_SECRET: ${{ secrets.ADMISSION_JOB_SECRET }}
+        run: node scripts/admission-jobs.mjs

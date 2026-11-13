@@ -80,10 +80,12 @@ function publicSettings(settings) {
 // ---------- identity and permissions ----------
 
 async function identify(env, request) {
-  const id = request.headers.get('oai-authenticated-user-id') || '';
-  const email = request.headers.get('oai-authenticated-user-email') || '';
-  const owner = Boolean(id && email && env.ADMIN_EMAIL && email.toLowerCase() === String(env.ADMIN_EMAIL).toLowerCase());
-  const user = { id, signedIn: Boolean(id), owner, profile: null, rank: 0, role: 'member', status: 'active' };
+  const siteId = request.headers.get('oai-authenticated-user-id') || '';
+  const google = siteId ? null : await findGoogleSession(env, request);
+  const id = siteId || google?.owner || '';
+  const email = (siteId ? request.headers.get('oai-authenticated-user-email') : google?.email) || '';
+  const owner = Boolean(siteId && email && env.ADMIN_EMAIL && email.toLowerCase() === String(env.ADMIN_EMAIL).toLowerCase());
+  const user = { id, email, provider: siteId ? 'chatgpt' : google ? 'google' : '', signedIn: Boolean(id), owner, profile: null, rank: 0, role: 'member', status: 'active' };
   if (!id) return user;
   const profile = await one(env, 'SELECT id, name, focus, goal, created, role, status, last_seen FROM profiles WHERE id = ?', id);
   if (profile) {
@@ -96,7 +98,7 @@ async function identify(env, request) {
     if (Date.now() - (profile.last_seen || 0) > 3600000) await db(env, 'UPDATE profiles SET last_seen = ? WHERE id = ?', Date.now(), id).run();
   }
   if (owner) { user.rank = 3; user.role = 'superadmin'; }
-  else if (profile && profile.status === 'active') {
+  else if (profile && profile.status === 'active' && (!google || profile.role === 'member')) {
     user.rank = Math.min(roleRank[profile.role] ?? 0, 2);
     user.role = roles[user.rank];
   }
@@ -135,37 +137,51 @@ async function limit(env, table, column, who, windowMs, max, message) {
 
 // ---------- editorial feed ----------
 
-const editorialState = { data: null, expires: 0, request: null };
+const editorialState = { data: null, expires: 0 };
 
-async function editorial(env, { force = false } = {}) {
-  if (!force && editorialState.data && editorialState.expires > Date.now()) return editorialState.data;
-  if (editorialState.request) return editorialState.request;
-  editorialState.request = (async () => {
-    const target = env.EDITORIAL_URL || DEFAULT_EDITORIAL_URL;
-    try {
-      if (target.startsWith('bundled:')) {
-        editorialState.data = { ...parseEditorial(assets.editorial, inferDeadline), live: true, source: 'bundled' };
-        editorialState.expires = Date.now() + 60000;
-        return editorialState.data;
-      }
-      const href = httpsHref(target);
-      if (!href) throw new Error('Invalid EDITORIAL_URL.');
-      const result = await fetch(href, { signal: AbortSignal.timeout(4500), headers: { Accept: 'application/json' } });
+async function fetchEditorial(href) {
+  const controller = new AbortController();
+  let timer;
+  try {
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        controller.abort();
+        reject(new Error('Editorial feed timed out.'));
+      }, 4500);
+    });
+    const read = async () => {
+      const result = await fetch(href, { signal: controller.signal, headers: { Accept: 'application/json' } });
       if (!result.ok) throw new Error('Editorial feed unavailable.');
       const text = await result.text();
       if (text.length > 260000) throw new Error('Editorial feed exceeds size limit.');
-      editorialState.data = { ...parseEditorial(JSON.parse(text), inferDeadline), live: true, source: 'remote' };
-      editorialState.expires = Date.now() + 60000;
-    } catch {
-      const previous = editorialState.data ?? { ...parseEditorial(assets.editorial, inferDeadline), source: 'bundled' };
-      editorialState.data = { ...previous, live: false };
-      editorialState.expires = Date.now() + 20000;
-    } finally {
-      editorialState.request = null;
+      return parseEditorial(JSON.parse(text), inferDeadline);
+    };
+    return await Promise.race([read(), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function editorial(env, { force = false } = {}) {
+  if (!force && editorialState.data && editorialState.expires > Date.now()) return editorialState.data;
+  // Worker network I/O belongs to the request that started it. Cache only completed data.
+  const target = env.EDITORIAL_URL || DEFAULT_EDITORIAL_URL;
+  try {
+    if (target.startsWith('bundled:')) {
+      editorialState.data = { ...parseEditorial(assets.editorial, inferDeadline), live: true, source: 'bundled' };
+    } else {
+      const href = httpsHref(target);
+      if (!href) throw new Error('Invalid EDITORIAL_URL.');
+      editorialState.data = { ...await fetchEditorial(href), live: true, source: 'remote' };
     }
-    return editorialState.data;
-  })();
-  return editorialState.request;
+    editorialState.expires = Date.now() + 60000;
+  } catch {
+    if (editorialState.data?.live && editorialState.expires > Date.now()) return editorialState.data;
+    const previous = editorialState.data ?? { ...parseEditorial(assets.editorial, inferDeadline), source: 'bundled' };
+    editorialState.data = { ...previous, live: false };
+    editorialState.expires = Date.now() + 20000;
+  }
+  return editorialState.data;
 }
 
 async function loadSection(env, section) {

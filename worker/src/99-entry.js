@@ -21,6 +21,8 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     try {
+      const auth = path.startsWith('/auth/') ? await googleFlow(env, request, url) : null;
+      if (auth) return auth;
       if (path.startsWith('/api/')) return await api(request, env, url, await identify(env, request), ctx);
       required(request.method === 'GET' || request.method === 'HEAD', 405, 'Method not allowed.');
       const asset = staticRoute(path);

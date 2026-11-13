@@ -1,0 +1,7 @@
+.admission-card h2 { margin-bottom: 0; }
+.admission-dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin: 0; }
+.admission-dates div { padding: .65rem .75rem; background: var(--glass); border: 1px solid var(--line); border-radius: .65rem; }
+.admission-dates dt { opacity: .8; font-size: .82rem; }
+.admission-dates dd { margin: .2rem 0 0; font-weight: 650; overflow-wrap: anywhere; }
+.admission-card details { overflow-wrap: anywhere; }
+#eligibilityForm { margin-top: 1rem; }

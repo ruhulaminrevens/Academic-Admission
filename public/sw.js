@@ -23,7 +23,7 @@ self.addEventListener('fetch', event => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  if (url.origin !== location.origin || url.pathname.startsWith('/api/') || url.pathname.startsWith('/signin') || url.pathname.startsWith('/private/')) return;
+  if (url.origin !== location.origin || url.pathname.startsWith('/api/') || url.pathname.startsWith('/auth/') || url.pathname.startsWith('/signin') || url.pathname === '/applications' || url.pathname.startsWith('/private/')) return;
 
   if (url.pathname.startsWith('/assets/') || /\.(?:png|svg|ico|webmanifest)$/.test(url.pathname)) {
     event.respondWith(caches.open(STATIC).then(async cache => {

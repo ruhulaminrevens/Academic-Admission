@@ -4,17 +4,19 @@ const fmtSize = bytes => bytes > 1048576 ? (bytes / 1048576).toFixed(1) + ' MB' 
 
 async function renderAccount(view) {
   const { signedIn, profile } = S.session;
+  const googleMessage = { state: "Google sign-in session expired. Try again.", cancelled: "Google sign-in was cancelled.", linked: "This Google account is already associated with another profile.", failed: "Google sign-in could not finish.", success: "Google account linked." }[new URLSearchParams(location.search).get("auth")];
+  if (googleMessage) toast(googleMessage);
   if (!signedIn) {
     view.innerHTML = `${pageHead('Your space', 'Account', 'Profile, saved posts, Information Desk ও private File Desk এক জায়গায়।')}
       <div class="container narrow"><div class="card cta-card" data-reveal><div class="composer-art">${icon('lock', 32)}</div>
-      <h2>Sign in to continue</h2><p class="muted">ChatGPT দিয়ে sign in করুন। আমরা আপনার email ঠিকানা সংরক্ষণ করি না।</p>
-      <a class="btn btn--primary btn--lg" href="/signin-with-chatgpt?return_to=%2Faccount" target="_top">Sign in with ChatGPT</a></div></div>`;
+      <h2>Sign in to continue</h2><p class="muted">Sign-in পদ্ধতি বেছে নিন।</p>
+      <a class="btn btn--primary btn--lg" href="/signin-with-chatgpt?return_to=%2Faccount" target="_top">Sign in with ChatGPT</a>${S.session.googleEnabled ? ' <a class="btn btn--ghost btn--lg" href="/auth/google" target="_top">Sign in with Google</a>' : ''}</div></div>`;
     return;
   }
   if (!profile) {
     view.innerHTML = `${pageHead('Welcome', 'Create your profile', 'আপনার নাম ও study goal দিন — তারপর community-তে যোগ দিন।')}
       <div class="container narrow"><form class="card form" data-reveal id="profileForm">${profileFields({})}
-      <div class="form-foot"><span class="muted small">Email সংরক্ষণ করা হয় না। যেকোনো সময় বদলানো বা মুছে ফেলা যায়।</span><button class="btn btn--primary" type="submit">${icon('check', 16)}Create profile</button></div></form></div>`;
+      <div class="form-foot"><span class="muted small">প্রোফাইল যেকোনো সময় বদলানো বা মুছে ফেলা যায়।</span><button class="btn btn--primary" type="submit">${icon('check', 16)}Create profile</button></div></form></div>`;
     $('#profileForm').addEventListener('submit', saveProfile);
     return;
   }
@@ -29,7 +31,10 @@ async function renderAccount(view) {
       <div class="grow"><h1 id="heading" tabindex="-1">${esc(profile.name)} ${roleBadge(profile.role)}</h1>
       <p class="muted">${profile.focus ? esc(profile.focus) + ' · ' : ''}Member since ${esc(fmtDate(profile.created))}</p>
       ${profile.goal ? `<p class="goal">${icon('pin', 14)} ${esc(profile.goal)}</p>` : ''}</div>
-      <div class="profile-actions">${mine ? `<a class="btn btn--ghost btn--sm" href="/admin" data-link>${icon('sliders', 15)}${S.session.rank >= 2 ? 'Admin console' : 'Moderation'}</a>` : ''}
+      <div class="profile-actions"><a class="btn btn--ghost btn--sm" href="/applications" data-link>My Applications</a>
+      ${S.session.provider === 'chatgpt' && S.session.googleEnabled && !S.session.googleLinked ? '<a class="btn btn--ghost btn--sm" href="/auth/google/link" target="_top">Link Google account</a>' : ''}
+      ${S.session.provider === 'google' ? '<form action="/auth/google/logout" method="post"><button class="btn btn--ghost btn--sm">Sign out</button></form>' : '<a class="btn btn--ghost btn--sm" href="/signout-with-chatgpt" target="_top">Sign out</a>'}
+      ${mine ? `<a class="btn btn--ghost btn--sm" href="/admin" data-link>${icon('sliders', 15)}${S.session.rank >= 2 ? 'Admin console' : 'Moderation'}</a>` : ''}
       <button class="btn btn--ghost btn--sm" type="button" data-tab-go="profile">${icon('edit', 15)}Edit profile</button></div></div></section>
     <section class="container"><div class="tabs" role="tablist">${tabs.map(([key, label, n], i) =>
       `<button class="tab" role="tab" type="button" data-tab="${key}" aria-selected="${i === 0}">${label}${n !== undefined ? `<b>${n}</b>` : ''}</button>`).join('')}<button class="tab" role="tab" type="button" data-tab="profile" hidden>Profile</button></div>

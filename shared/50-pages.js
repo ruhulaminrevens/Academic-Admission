@@ -174,6 +174,11 @@ export function pageCommunity(d, ctx) {
   return `${pageHead('Student community', 'Community', 'প্রশ্ন করুন, অভিজ্ঞতা শেয়ার করুন এবং অন্য শিক্ষার্থীদের কাছ থেকে শিখুন।')}
   <div class="container layout">
     <div class="main-col stack">
+      <div class="card form"><h2>শুরু করুন · Editorial guides</h2>
+        <details><summary>আবেদনের আগে কোন তথ্যগুলো মিলিয়ে দেখব?</summary><p>প্রতিষ্ঠান, ইউনিট, সেশন, আবেদন ও ফি জমার শেষ সময়, যোগ্যতার শর্ত এবং পরীক্ষার তারিখ মিলিয়ে দেখুন। <a href="/admissions" data-link>অফিসিয়াল উৎসসহ ক্যালেন্ডার</a> দেখুন।</p></details>
+        <details><summary>Fee paid দেখলে এরপর কী করব?</summary><p>অফিসিয়াল পোর্টালে payment status দেখুন, রসিদ নিজের কাছে রাখুন ও প্রবেশপত্র প্রকাশের তারিখ লিখে রাখুন। রসিদ বা application ID কমিউনিটিতে প্রকাশ করবেন না।</p></details>
+        <details><summary>পরীক্ষার প্রস্তুতি কোথায় শুরু করব?</summary><p>প্রথমে মূল বিজ্ঞপ্তির syllabus, নম্বর বিভাজন ও negative marking দেখুন। তারপর <a href="/study" data-link>Study &amp; Guidelines</a> থেকে বিষয়ভিত্তিক প্রস্তুতি সাজান।</p></details>
+      </div>
       <div id="composer">${composer(ctx)}</div>
       <div class="toolbar"><div class="chips" role="group" aria-label="Filter by topic">
         <button class="chip-btn" type="button" data-topic="" aria-pressed="${!topic}">All topics</button>
@@ -221,7 +226,9 @@ export function pagePrivacy() {
   return `${pageHead('Legal', 'Privacy Policy', 'আমরা কোন তথ্য সংরক্ষণ করি, কেন করি এবং আপনি কীভাবে নিয়ন্ত্রণ করবেন।')}
   <div class="container narrow"><div class="card prose" data-reveal>
     <h2>কোন তথ্য সংরক্ষিত হয়</h2>
-    <ul><li><strong>Profile:</strong> আপনার দেওয়া display name, study focus ও goal। আপনার email ঠিকানা সংরক্ষণ করা হয় না।</li>
+    <ul><li><strong>Profile:</strong> আপনার দেওয়া display name, study focus ও goal। </li>
+    <li><strong>Application tracker:</strong> shortlist ও application stage। GPA ও subject grades calculator চালাতে browser-এর বাইরে পাঠানো হয় না।</li>
+    <li><strong>Sign-in ও reminders:</strong> Google sign-in চালু থাকলে Google account identifier ও মেয়াদযুক্ত session record রাখা হয়। Email reminder চালু করলে sign-in email ও consent-এর সময় রাখা হয়। My Applications থেকে email বন্ধ করতে পারবেন।</li>
     <li><strong>Community content:</strong> আপনার পোস্ট, comment, reaction ও bookmark।</li>
     <li><strong>Information Desk:</strong> আপনার request ও admin-এর উত্তর (শুধু আপনি ও admin দেখেন)।</li>
     <li><strong>File Desk:</strong> আপনার আপলোড করা PDF/PNG/JPEG — private storage-এ, শুধু আপনার account থেকে দেখা যায়।</li></ul>
@@ -230,7 +237,7 @@ export function pagePrivacy() {
     <h2>আপনার নিয়ন্ত্রণ</h2>
     <p>Account পাতা থেকে যেকোনো সময় নিজের ডেটা JSON হিসেবে export করতে বা account ও সংশ্লিষ্ট সব কনটেন্ট স্থায়ীভাবে মুছে ফেলতে পারবেন।</p>
     <h2>তৃতীয় পক্ষ</h2>
-    <p>Sign-in ChatGPT-এর মাধ্যমে হয়। নোটিশের লিংকগুলো বাইরের সরকারি/প্রতিষ্ঠানের সাইটে যায় — সেগুলোর নিজস্ব নীতি প্রযোজ্য।</p>
+    <p>Sign-in-এর জন্য ChatGPT বা Google ব্যবহৃত হতে পারে। Email reminder সক্রিয় থাকলে delivery provider Resend প্রাপকের email এবং reminder বার্তা পায়। নোটিশের লিংকগুলো বাইরের সরকারি/প্রতিষ্ঠানের সাইটে যায় — সেগুলোর নিজস্ব নীতি প্রযোজ্য।</p>
     <p class="muted small">এটি একটি সাধারণ নীতিপত্র; আইনগত প্রয়োজনে পেশাদার পরামর্শ নিন।</p>
   </div></div>`;
 }

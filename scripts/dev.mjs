@@ -48,6 +48,7 @@ export async function startDev({ port = Number(option('port', 8787)), seed = fla
       const response = await module.default.fetch(request, env, { waitUntil() {} });
       const out = {};
       response.headers.forEach((value, key) => { out[key] = value; });
+      if (response.headers.has('set-cookie')) out['set-cookie'] = response.headers.getSetCookie();
       res.writeHead(response.status, out);
       res.end(Buffer.from(await response.arrayBuffer()));
     } catch (error) { console.error(error); res.writeHead(500); res.end('Dev server error'); }

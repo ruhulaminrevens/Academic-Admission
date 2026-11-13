@@ -39,6 +39,8 @@ const routeTable = [
   { rx: /^\/about$/, async load() { return { html: pageAbout({}, ctxNow()), title: 'About & FAQ' }; } },
   { rx: /^\/privacy$/, async load() { return { html: pagePrivacy(), title: 'Privacy Policy' }; } },
   { rx: /^\/terms$/, async load() { return { html: pageTerms(), title: 'Terms of Use' }; } },
+  { rx: /^\/admissions$/, client: renderAdmissions, title: 'ভর্তি ক্যালেন্ডার' },
+  { rx: /^\/applications$/, user: true, client: renderApplications, title: 'My Applications' },
   { rx: /^\/account$/, user: true, client: renderAccount, title: 'Account' },
   { rx: /^\/admin$/, user: true, client: renderAdmin, title: 'Admin console' },
 ];

@@ -35,3 +35,11 @@ and `AI_WEBHOOK_SECRET` (secret, same value as the Worker). Run once by hand: `n
 
 ## 6. Rollback
 Redeploy the previous Worker build. The migration is additive; the old Worker ignores new columns/tables.
+
+## Admission Tracker
+- Publish the additive `0002_admission_tracker` migration with the Worker. Check `/api/health`, `/admissions`, `/applications`, and the Admission review tab.
+- The public calendar starts with three source-backed records. The guest calculator keeps the user's grades in the browser. Incomplete eligibility rules intentionally return a request for more information.
+- The hourly workflow monitors the current official URLs in `data/admissions.json`. A changed PDF is flagged even if it contains only scanned images. Inspect the official document before approving. GitHub observations are private to the admin review screen on the Site, and their public repository payload contains public-source text only.
+- Google: create a Web application OAuth client. Add the exact `<SITE_URL>/auth/google/callback` redirect, then set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `GOOGLE_STATE_SECRET` in Sites. Sign in to both providers to link an existing profile. Google sessions do not grant elevated Admin access.
+- Email: verify a sender domain in Resend. Set `RESEND_API_KEY`, `REMINDER_FROM` and `ADMISSION_JOB_SECRET` in Sites. Set GitHub Actions repository variable `SITE_URL` and the matching `ADMISSION_JOB_SECRET` as a secret. Run Hourly editorial run manually and check an opted-in test account with an upcoming deadline before announcing email delivery.
+- Keep `private/admission-tracker.html` confined to the Sites source. It is optional for GitHub builds and must never be committed to the public repository.
