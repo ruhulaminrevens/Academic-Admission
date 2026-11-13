@@ -12,16 +12,21 @@ function paintAdmissionDeadlines(view) {
   }
 }
 
-function bindAdmissionCalendar(view, items) {
+function bindAdmissionEligibility(view, items) {
   $('#eligibilityForm', view).addEventListener('submit', event => {
     event.preventDefault();
     const profile = Object.fromEntries(new FormData(event.target));
     for (const item of items) {
       const result = admissionEligibility(item.rules, profile);
       const out = view.querySelector('[data-admission-card="' + item.id + '"] [data-admission-result]');
+      if (!out) continue;
       out.innerHTML = `<strong>${esc(result.status)}</strong> · ${esc(result.reasons.join(', '))}${item.rules?.note || item.eligibilityNote ? '<br>' + esc(item.rules?.note || item.eligibilityNote) : ''}${item.rules?.source ? ` <a href="${esc(item.rules.source)}" target="_blank" rel="noopener noreferrer">যোগ্যতার উৎস</a>` : ''}`;
     }
   });
+}
+
+function bindAdmissionCalendar(view, items) {
+  bindAdmissionEligibility(view, items);
   for (const button of $$('[data-shortlist]', view)) button.addEventListener('click', () => busy(button, async () => {
     if (!S.session.profile) { navigate('/account'); return; }
     const data = await api('/admission-plans');
@@ -41,7 +46,7 @@ async function renderAdmissions(view) {
 }
 
 async function renderApplications(view) {
-  const heading = pageHead('Student dashboard', 'My Applications', 'নিজের shortlist, আবেদন ও পরীক্ষার অগ্রগতি দেখুন।');
+  const heading = pageHead('Student dashboard', 'আমার ভর্তি ড্যাশবোর্ড', 'নিজের shortlist, আবেদন ও পরীক্ষার অগ্রগতি দেখুন।');
   if (!S.session.profile) {
     view.innerHTML = heading + '<section class="container"><a class="btn btn--primary" href="/account" data-link>Sign in or create a profile</a></section>';
     return;
@@ -49,32 +54,25 @@ async function renderApplications(view) {
   const data = await api('/admission-plans');
   if (cleanPath() !== '/applications') return;
   const entries = data.plans.map(plan => ({ ...plan, item: data.items.find(item => item.id === plan.circular) }))
-    .filter(plan => plan.item).sort((a, b) => (a.item.end || 'z').localeCompare(b.item.end || 'z'));
-  view.innerHTML = heading + `<section class="container stack">
-    <div class="card form"><h2>Email reminders</h2><p class="muted">Shortlist ও Applied আবেদনের জন্য সময়ের ৭ দিন ও ২৪ ঘণ্টা আগে এবং deadline বদলালে email।</p>
-    ${data.reminderAvailable || data.optedIn ? `<button class="btn btn--ghost" id="admissionReminders" type="button">${data.optedIn ? 'Turn off reminders' : 'Enable email reminders'}</button>` : '<p class="small">Email delivery এখনো চালু হয়নি।</p>'}</div>
-    <div class="actions"><a class="btn btn--primary" href="/admissions" data-link>ভর্তি ক্যালেন্ডার</a></div>
-    <div class="grid grid-2">${entries.map(plan => `<div class="stack">${admissionCard(plan.item, { tracked: true })}
-      <div class="card form"><label>Application stage<select data-stage="${esc(plan.circular)}">${Object.entries(admissionStages).map(([key, label]) =>
-        `<option value="${key}"${key === plan.stage ? ' selected' : ''}>${label}</option>`).join('')}</select></label>
-      <button class="btn btn--ghost" type="button" data-remove-plan="${esc(plan.circular)}">Remove from shortlist</button></div></div>`).join('')}</div>
-    ${entries.length ? '' : emptyState('আপনার shortlist খালি। ক্যালেন্ডার থেকে একটি আবেদন যোগ করুন।')}</section>`;
+    .filter(plan => plan.item);
+  view.innerHTML = heading + studentDashboard(data, entries, Date.now());
+  bindStudentDashboard(view, entries);
   paintAdmissionDeadlines(view);
   const reminder = $('#admissionReminders', view);
   reminder?.addEventListener('click', () => busy(reminder, async () => {
     await api('/admission-reminders', { method: 'PUT', body: { enabled: !data.optedIn } });
-    await renderApplications(view);
+    if (cleanPath() === '/applications') await renderApplications(view);
   }));
   for (const select of $$('[data-stage]', view)) select.addEventListener('change', () => busy(select, async () => {
     const previous = entries.find(plan => plan.circular === select.dataset.stage).stage;
     try {
       await api('/admission-plans/' + select.dataset.stage, { method: 'PUT', body: { stage: select.value } });
-      await renderApplications(view);
+      if (cleanPath() === '/applications') await renderApplications(view);
     } catch (error) { select.value = previous; throw error; }
   }));
   for (const button of $$('[data-remove-plan]', view)) button.addEventListener('click', () => busy(button, async () => {
     await api('/admission-plans/' + button.dataset.removePlan, { method: 'DELETE' });
-    await renderApplications(view);
+    if (cleanPath() === '/applications') await renderApplications(view);
   }));
 }
 

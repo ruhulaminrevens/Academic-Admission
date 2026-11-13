@@ -55,6 +55,7 @@ async function renderRoute({ hydrate = false } = {}) {
   S.path = path;
   const id = ++S.loadId;
   const view = $('#view');
+  view.studentNavigation?.abort();
   const found = matchRoute(path);
   markActiveNav(path);
   document.body.dataset.page = found ? path.split('/')[1] || 'home' : 'notfound';

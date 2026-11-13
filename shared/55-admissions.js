@@ -33,9 +33,9 @@ export function admissionDateLabel(value) {
   return new Intl.DateTimeFormat('bn-BD', { dateStyle: 'medium', ...(precise ? { timeStyle: 'short' } : {}), timeZone: 'Asia/Dhaka' }).format(new Date(precise ? value : value + 'T12:00:00+06:00'));
 }
 
-export function admissionCard(item, { tracked = false } = {}) {
+export function admissionCard(item, { tracked = false, heading = "h2" } = {}) {
   return `<article class="card form admission-card" data-admission-card="${esc(item.id)}">
-    <h2>${esc(item.institution)}</h2><p class="muted">${esc(item.unit)} · ${esc(item.session)}</p>
+    <${heading}>${esc(item.institution)}</${heading}><p class="muted">${esc(item.unit)} · ${esc(item.session)}</p>
     <dl class="admission-dates">${Object.entries(admissionDates).map(([key, label]) => `<div><dt>${label}</dt><dd>${esc(admissionDateLabel(item[key]))}</dd></div>`).join('')}</dl>
     <p class="muted small">${esc(item.evidence)}</p>
     ${item.end?.length > 10 ? `<p class="small"><strong data-admission-deadline="${esc(item.end)}">আবেদনের শেষ সময় ${esc(admissionDateLabel(item.end))}</strong></p>` : ''}
@@ -50,8 +50,14 @@ export function admissionCard(item, { tracked = false } = {}) {
 export function pageAdmissions(items) {
   return `${pageHead('Bangladesh · 2026–27', 'ভর্তি ক্যালেন্ডার', 'অফিসিয়াল সময়সূচি দেখুন, প্রাথমিক যোগ্যতা মিলিয়ে নিন ও নিজের আবেদন shortlist করুন। সময় বাংলাদেশ স্থানীয় সময়ে।')}
   <section class="container stack">
-    <details class="card form"><summary>যোগ্যতা যাচাই</summary>
-      <form id="eligibilityForm" class="form">
+    <details class="card form"><summary>যোগ্যতা যাচাই</summary>${admissionEligibilityForm()}</details>
+    <div class="actions"><a class="btn btn--ghost" href="/applications" data-link>My Applications</a></div>
+    <div class="grid grid-2">${items.map(item => admissionCard(item)).join('')}</div>
+  </section>`;
+}
+
+export function admissionEligibilityForm() {
+  return `<form id="eligibilityForm" class="form">
         <p class="muted">GPA ও subject grades এই browser-এই হিসাব হয়। বিভাগভেদে অতিরিক্ত শর্তের জন্য মূল নির্দেশিকা দেখুন।</p>
         <div class="grid grid-2">
         <label>পরীক্ষার ধরন<select name="board"><option value="bd">বাংলাদেশি SSC/HSC</option><option value="other">O/A Level বা অন্য সমমান</option></select></label>
@@ -60,9 +66,5 @@ export function pageAdmissions(items) {
         ${Object.entries(admissionSubjects).map(([key, label]) => `<label>${label} grade point<input type="number" name="${key}" min="0" max="5" step=".01"></label>`).join('')}
         </div>
         <button class="btn btn--primary" type="submit">যোগ্যতা দেখুন</button>
-      </form>
-    </details>
-    <div class="actions"><a class="btn btn--ghost" href="/applications" data-link>My Applications</a></div>
-    <div class="grid grid-2">${items.map(item => admissionCard(item)).join('')}</div>
-  </section>`;
+      </form>`;
 }
